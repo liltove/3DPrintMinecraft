@@ -27,6 +27,22 @@ public class PetWolf extends JavaPlugin {
                 LOG.info("[PetWolf] Howl!");
                 return true;
             }
+        } else if (label.equalsIgnoreCase("petbear")) {
+            if (sender instanceof Player) {
+                //get the player
+                Player me = (Player) sender;
+                //get the player's location
+                Location spot = me.getLocation();
+                //get the game world
+                World world = me.getWorld();
+                //spawn one wolf
+                //Wolf wolf = world.spawn(spot, Wolf.class);
+                PolarBear bear = world.spawn(spot, PolarBear.class);
+                //set collar color
+                bear.setBaby();
+                LOG.info("[PetWolf] Howl!");
+                return true;
+            }
         }
         return false;
     }

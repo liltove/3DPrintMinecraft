@@ -1,0 +1,11 @@
+name: PetWolf
+
+author: Kate Ringland
+
+main: com.javaminecraft.PetWolf
+
+commands:
+    petwolf:
+        description: Spawn a wolf as the player's pet.
+        
+version: 1.0

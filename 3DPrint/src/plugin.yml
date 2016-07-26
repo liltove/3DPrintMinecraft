@@ -1,4 +1,4 @@
-name: PetWolf
+name: 3D-Print
 
 author: Kate Ringland
 
@@ -8,4 +8,4 @@ commands:
     printmodel:
         description: currently does nothing of value.
         
-version: 1.0
+version: 0.01

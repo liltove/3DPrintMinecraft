@@ -18,9 +18,8 @@ public class PrintModel extends JavaPlugin {
                 Location spot = me.getLocation();
                 //get the game world
                 World world = me.getWorld();
-                //write to player console?
+                //write to player console
                 me.sendMessage("You have summoned the 3D-printer");
-                me.chat("what's this do?");
             }
         }
         return false;

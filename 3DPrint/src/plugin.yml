@@ -1,13 +1,11 @@
-name: PetWolf
+name: 3D-Print
 
 author: Kate Ringland
 
-main: com.javaminecraft.PetWolf
+main: com.javaminecraft.PrintModel
 
 commands:
-    petwolf:
-        description: Spawn a wolf as the player's pet.
-    petbear:
-        description: Spawn a baby polar bear nearby.
+    printmodel:
+        description: currently does nothing of value.
         
-version: 1.0
+version: 0.01

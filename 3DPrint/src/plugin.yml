@@ -1,0 +1,13 @@
+name: PetWolf
+
+author: Kate Ringland
+
+main: com.javaminecraft.PetWolf
+
+commands:
+    petwolf:
+        description: Spawn a wolf as the player's pet.
+    petbear:
+        description: Spawn a baby polar bear nearby.
+        
+version: 1.0

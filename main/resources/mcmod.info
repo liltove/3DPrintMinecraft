@@ -1,0 +1,16 @@
+[
+{
+  "modid": "printfromminecraft",
+  "name": "Print From Minecraft",
+  "description": "Place PrintBlocks around creation and send model to 3D Printer.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["star"],
+  "credits": "credit to the people",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

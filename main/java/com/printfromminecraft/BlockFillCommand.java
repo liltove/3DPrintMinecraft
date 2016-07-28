@@ -8,14 +8,13 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.BlockPos; 
-import net.minecraft.util.ChatComponentText; 
-import net.minecraft.util.EnumChatFormatting; 
-import net.minecraft.world.World; 
-import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraft.util.math.BlockPos; 
+import net.minecraft.util.text.TextComponentString; 
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.command.CommandBase;
+import net.minecraft.server.MinecraftServer;
 
-public class BlockFillCommand extends CommandBase{
+public class BlockFillCommand implements ICommand{
     private List aliases = new ArrayList();
     private Block block;
     
@@ -24,12 +23,12 @@ public class BlockFillCommand extends CommandBase{
     }
     
     @Override
-    public String getName() {
+    public String getCommandName() {
         return null;
     }
     
     @Override
-    public int compareTo(Object o){
+    public int compareTo(ICommand command){
         return 0;
     }
     
@@ -39,13 +38,18 @@ public class BlockFillCommand extends CommandBase{
     }
     
     @Override
-    public List getAliases(){
+    public List getCommandAliases(){
         return aliases;
     }
     
     @Override
-    public List addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos){
+    public List getTabCompletionOptions(MinecraftServer server, ICommandSender sender, String[] args, BlockPos pos){
         return null;
+    }
+    
+    @Override
+    public boolean checkPermission(MinecraftServer server, ICommandSender sender){
+        return true;
     }
     
     @Override
@@ -54,7 +58,7 @@ public class BlockFillCommand extends CommandBase{
     }
     
     @Override
-    public void execute(ICommandSender sender, Strings[] args){
+    public void execute(MinecraftServer server, ICommandSender sender, String[] args){
         if(args.length != 1){
             sendErrorMessage(sender, "Invalid number of arguments");
             return;
@@ -64,12 +68,12 @@ public class BlockFillCommand extends CommandBase{
             block = Block.getBlockById(Integer.parseInt(args[0]));
             
             if (block == Blocks.AIR && Integer.parseInt(args[0]) != 0) {
-                sendErrorMessage(sender,"The argument \"" + args[0]) + "\" is not a valid black ID.");
+                sendErrorMessage(sender,"The argument \"" + args[0] + "\" is not a valid black ID.");
                 return;
             }
         } catch (NumberFormatException e){
             if(Block.getBlockFromName(args[0])==null) {
-                sendErrorMessage(sender, "The argument \"" + args[0]) + "\" is not a valid black name/");
+                sendErrorMessage(sender, "The argument \"" + args[0] + "\" is not a valid black name/");
                 return;
             } else {
                 block = Block.getBlockFromName(args[0]);
@@ -110,11 +114,11 @@ public class BlockFillCommand extends CommandBase{
     }
     
     private void sendErrorMessage(ICommandSender sender, String message) {
-        sender.addChatMessage(new ChatComponentText(EnumChatFormatting.DARK_RED + message));
+        sender.addChatMessage(new TextComponentString(TextFormatting.DARK_RED + message));
     }
     
-    @Override
+    //@Override
     public boolean canCommandSenderUse(ICommandSender sender) {
-        return sender instanceOf EntityPlayer;
+        return sender instanceof EntityPlayer;
     }
 }

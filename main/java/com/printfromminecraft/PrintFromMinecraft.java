@@ -58,6 +58,9 @@ public class PrintFromMinecraft {
     
     @EventHandler
     public void registerCommands(FMLServerStartingEvent event) {
-        event.registerServerCommand(new PrintModel());
+        //event.registerServerCommand(new PrintModel());
+        event.registerServerCommand(new BlockFillCommand());
     }
+    
+    
 }

@@ -34,7 +34,7 @@ public class PrintFromMinecraft {
         proxy.registerRendering();
         
         magicPrintWand = new MagicPrintWand();
-        GameRegistry.registerItem(magicPrintWand, "magicPrintWand");
+        //GameRegistry.registerItem(magicPrintWand, "magicPrintWand");
     }
     
     @EventHandler
@@ -64,7 +64,7 @@ public class PrintFromMinecraft {
     @EventHandler
     public void registerCommands(FMLServerStartingEvent event) {
         //event.registerServerCommand(new PrintModel());
-        //event.registerServerCommand(new BlockFillCommand());
+        event.registerServerCommand(new BlockFillCommand());
     }
     
     

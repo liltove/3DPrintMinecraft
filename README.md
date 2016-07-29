@@ -8,12 +8,12 @@ For details on outline of program, see our working doc here: https://docs.google
 
 ##Current Functionality
 
-Currently, the program recognizes the player's command (in chat) "/printmodel" & will output a message to the player in chat acknowledging the command.
+* New Item: magicPrintWand - allows user to set coordinates of the print area in-world via right-click
+* Recipe (9 dirt blocks) creates magicPrintWand
 
 ##Next Steps
 
-1. Create a new "3dprint" block to be placed as markers
-2. Determine how blocks should be created
-	* Need some kind of recipe
-3. Determine how blocks shuld be placed
-	* 4 corners? in a cube?
+1. Access block information for all blocks in the print area
+2. Send the non-air blocks as part of the print model
+3. Create the print file "stl"
+4. Host file for download on a server

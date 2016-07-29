@@ -20,7 +20,7 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 @Mod(modid = PrintFromMinecraft.MODID, version = PrintFromMinecraft.VERSION)
 public class PrintFromMinecraft {
     public static final String MODID = "printfromminecraft";
-    public static final String VERSION = "0.01";
+    public static final String VERSION = "0.02";
     
     public static Block printBlock;
     public static Item magicPrintWand;
@@ -33,8 +33,10 @@ public class PrintFromMinecraft {
         printBlock = new PrintBlock();
         proxy.registerRendering();
         
-        magicPrintWand = new MagicPrintWand();
-        //GameRegistry.registerItem(magicPrintWand, "magicPrintWand");
+        //register the wand texture and model
+        Item magicPrintWandItem = GameRegistry.findItem("printfromminecraft", "magicPrintWand");
+        ModelResourceLocation magicPrintWandModel = new ModelResourceLocation("printfromminecraft:magicPrintWand", "inventory");
+        Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(magicPrintWandItem, 0, magicPrintWandModel);
     }
     
     @EventHandler

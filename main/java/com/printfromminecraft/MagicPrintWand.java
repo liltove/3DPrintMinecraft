@@ -38,29 +38,31 @@ public class MagicPrintWand extends Item {
 //        
 //        enderman.setLocationAndAngles(player.posX, player.posY, player.posZ, 0,0);
 //        world.spawnEntityInWorld(enderman);
-        
-        if (pos1.isEmpty() && pos2.isEmpty()){
-            pos1.add(player.posX);
-            pos1.add(player.posY);
-            pos1.add(player.posZ);
+        if (!world.isRemote){
+            if (pos1.isEmpty() && pos2.isEmpty()){
+                pos1.add(player.posX);
+                pos1.add(player.posY);
+                pos1.add(player.posZ);
 
-            player.addChatMessage(new TextComponentString(TextFormatting.GREEN + "Position 1 set to " + player.posX + ", " + player.posY + ", " + player.posZ + "."));
-        } else if (!pos1.isEmpty() && pos2.isEmpty()){
-            pos2.add(player.posX);
-            pos2.add(player.posY);
-            pos2.add(player.posZ);
+                player.addChatMessage(new TextComponentString(TextFormatting.GREEN + "Position 1 set to " + player.posX + ", " + player.posY + ", " + player.posZ + "."));
+            } else if (!pos1.isEmpty() && pos2.isEmpty()){
+                pos2.add(player.posX);
+                pos2.add(player.posY);
+                pos2.add(player.posZ);
 
-            player.addChatMessage(new TextComponentString(TextFormatting.GREEN + "Position 2 set to " + player.posX + ", " + player.posY + ", " + player.posZ + "."));
-        } else {
-            pos1.clear();
-            pos2.clear();
+                player.addChatMessage(new TextComponentString(TextFormatting.GREEN + "Position 2 set to " + player.posX + ", " + player.posY + ", " + player.posZ + "."));
+            } else {
+                pos1.clear();
+                pos2.clear();
 
-            pos1.add(player.posX);
-            pos1.add(player.posY);
-            pos1.add(player.posZ);
+                pos1.add(player.posX);
+                pos1.add(player.posY);
+                pos1.add(player.posZ);
 
-            player.addChatMessage(new TextComponentString(TextFormatting.GREEN + "Position 1 set to " + player.posX + ", " + player.posY + ", " + player.posZ + "."));
+                player.addChatMessage(new TextComponentString(TextFormatting.GREEN + "Position 1 set to " + player.posX + ", " + player.posY + ", " + player.posZ + "."));
+            }
         }
+        
 
         return new ActionResult(EnumActionResult.SUCCESS, stack);
     }

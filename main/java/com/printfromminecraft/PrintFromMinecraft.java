@@ -1,11 +1,9 @@
 package com.printfromminecraft;
 
 import net.minecraft.init.Blocks;
-import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.*;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -59,7 +57,8 @@ public class PrintFromMinecraft {
     
     @EventHandler
     public void registerCommands(FMLServerStartingEvent event) {
-        event.registerServerCommand(new BlockFillCommand());
+        //event.registerServerCommand(new BlockFillCommand());
+        event.registerServerCommand(new WriteToSTL());
     }
     
     

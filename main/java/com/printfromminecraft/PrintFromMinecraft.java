@@ -23,6 +23,7 @@ public class PrintFromMinecraft {
     public static final String VERSION = "0.01";
     
     public static Block printBlock;
+    public static Item magicPrintWand;
     
     @SidedProxy(clientSide = "com.printfromminecraft.ClientProxy", serverSide = "com.printfromminecraft.ServerProxy")
     public static CommonProxy proxy;
@@ -35,6 +36,9 @@ public class PrintFromMinecraft {
     
     @EventHandler
     public void init(FMLInitializationEvent event) {
+        magicPrintWand = new MagicPrintWand();
+        GameRegistry.registerItem(magicPrintWand, "magicPrintWant");
+
         //add the recipe to create an apple
         GameRegistry.addRecipe(new ItemStack(printBlock),
             "XXX",

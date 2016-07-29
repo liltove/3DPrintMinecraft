@@ -4,7 +4,7 @@ import static com.printfromminecraft.BlockFillerPositionSelector.pos1;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.monster.EntityEnderman;
+//import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -33,19 +33,19 @@ public class MagicPrintWand extends Item {
     
     @Override
     public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
+//        
+//        EntityEnderman enderman = new EntityEnderman(world);
+//        
+//        enderman.setLocationAndAngles(player.posX, player.posY, player.posZ, 0,0);
+//        world.spawnEntityInWorld(enderman);
         
-        EntityEnderman enderman = new EntityEnderman(world);
-        
-        enderman.setLocationAndAngles(player.posX, player.posY, player.posZ, 0,0);
-        world.spawnEntityInWorld(enderman);
-        
-        if (pos1.isEmpty()){
+        if (pos1.isEmpty() && pos2.isEmpty()){
             pos1.add(player.posX);
             pos1.add(player.posY);
             pos1.add(player.posZ);
 
             player.addChatMessage(new TextComponentString(TextFormatting.GREEN + "Position 1 set to " + player.posX + ", " + player.posY + ", " + player.posZ + "."));
-        } else if (pos2.isEmpty()){
+        } else if (!pos1.isEmpty() && pos2.isEmpty()){
             pos2.add(player.posX);
             pos2.add(player.posY);
             pos2.add(player.posZ);

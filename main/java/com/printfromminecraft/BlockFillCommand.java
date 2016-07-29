@@ -11,8 +11,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos; 
 import net.minecraft.util.text.TextComponentString; 
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.command.CommandBase;
+//import net.minecraft.command.CommandBase;
 import net.minecraft.server.MinecraftServer;
+
 
 public class BlockFillCommand implements ICommand{
     private List aliases = new ArrayList();

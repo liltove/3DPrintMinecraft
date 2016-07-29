@@ -81,26 +81,26 @@ public class BlockFillCommand implements ICommand{
             }
         }
         
-        if (BlockFillerPositionSelector.pos1.isEmpty() || BlockFillerPositionSelector.pos2.isEmpty()) {
+        if (MagicPrintWand.pos1.isEmpty() || MagicPrintWand.pos2.isEmpty()) {
             sendErrorMessage(sender, "Make a region selction first.");
             return;
         }
         
-        if (BlockFillerPositionSelector.pos1.get(0) > BlockFillerPositionSelector.pos2.get(0)) {
+        if (MagicPrintWand.pos1.get(0) > MagicPrintWand.pos2.get(0)) {
             swapPositions(0);
         }
         
-        if(BlockFillerPositionSelector.pos1.get(1) > BlockFillerPositionSelector.pos2.get(1)) {
+        if(MagicPrintWand.pos1.get(1) > MagicPrintWand.pos2.get(1)) {
             swapPositions(1);
         }
         
-        if(BlockFillerPositionSelector.pos1.get(2) > BlockFillerPositionSelector.pos2.get(2)) {
+        if(MagicPrintWand.pos1.get(2) > MagicPrintWand.pos2.get(2)) {
             swapPositions(2);
         }
         
-        for (int x = BlockFillerPositionSelector.pos1.get(0); x <= BlockFillerPositionSelector.pos2.get(0); x++){
-            for (int y = BlockFillerPositionSelector.pos1.get(1); y <= BlockFillerPositionSelector.pos2.get(1); y++){
-                for (int z = BlockFillerPositionSelector.pos1.get(2); z <= BlockFillerPositionSelector.pos2.get(2); z++){
+        for (double x = MagicPrintWand.pos1.get(0); x <= MagicPrintWand.pos2.get(0); x++){
+            for (double y = MagicPrintWand.pos1.get(1); y <= MagicPrintWand.pos2.get(1); y++){
+                for (double z = MagicPrintWand.pos1.get(2); z <= MagicPrintWand.pos2.get(2); z++){
                     ((EntityPlayer)sender).worldObj.setBlockState(new BlockPos(x,y,z),block.getBlockState().getBaseState());
                 }
             }

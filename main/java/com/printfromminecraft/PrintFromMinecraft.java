@@ -35,10 +35,8 @@ public class PrintFromMinecraft {
     @EventHandler
     public void init(FMLInitializationEvent event) {
         //register the wand texture and model
-        //magicPrintWand = new Item().setRegistryName("printfromminecraft", "magicPrintWand");
         magicPrintWand = new MagicPrintWand();
         GameRegistry.register(magicPrintWand);
-        
 
         //add the recipe to create an apple
         GameRegistry.addRecipe(new ItemStack(magicPrintWand),
@@ -61,7 +59,7 @@ public class PrintFromMinecraft {
     
     @EventHandler
     public void registerCommands(FMLServerStartingEvent event) {
-        
+        event.registerServerCommand(new BlockFillCommand());
     }
     
     

@@ -33,11 +33,6 @@ public class MagicPrintWand extends Item {
     
     @Override
     public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
-//        
-//        EntityEnderman enderman = new EntityEnderman(world);
-//        
-//        enderman.setLocationAndAngles(player.posX, player.posY, player.posZ, 0,0);
-//        world.spawnEntityInWorld(enderman);
         if (!world.isRemote){
             if (pos1.isEmpty() && pos2.isEmpty()){
                 pos1.add(player.posX);

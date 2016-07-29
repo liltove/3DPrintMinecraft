@@ -32,15 +32,16 @@ public class PrintFromMinecraft {
     public void init(FMLPreInitializationEvent event) {
         printBlock = new PrintBlock();
         proxy.registerRendering();
+        
+        magicPrintWand = new MagicPrintWand();
+        GameRegistry.registerItem(magicPrintWand, "magicPrintWand");
     }
     
     @EventHandler
     public void init(FMLInitializationEvent event) {
-        magicPrintWand = new MagicPrintWand();
-        GameRegistry.registerItem(magicPrintWand, "magicPrintWant");
 
         //add the recipe to create an apple
-        GameRegistry.addRecipe(new ItemStack(printBlock),
+        GameRegistry.addRecipe(new ItemStack(magicPrintWand),
             "XXX",
             "XXX",
             "XXX",
@@ -63,7 +64,7 @@ public class PrintFromMinecraft {
     @EventHandler
     public void registerCommands(FMLServerStartingEvent event) {
         //event.registerServerCommand(new PrintModel());
-        event.registerServerCommand(new BlockFillCommand());
+        //event.registerServerCommand(new BlockFillCommand());
     }
     
     

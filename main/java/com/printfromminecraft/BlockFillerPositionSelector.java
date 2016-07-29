@@ -6,6 +6,8 @@ import net.minecraft.init.Items;
 //import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraft.util.text.TextComponentString; 
@@ -17,11 +19,11 @@ public class BlockFillerPositionSelector {
     
     @SubscribeEvent
     public void choosePositions(PlayerInteractEvent event) {
-        if (event.getEntityPlayer().getHeldItemMainhand()==null || event.getEntityPlayer().getHeldItemMainhand().getItem() != Items.WOODEN_AXE || !event.getEntityPlayer().capabilities.isCreativeMode) {
+        if (event.getEntityPlayer().getHeldItemMainhand()==null ) {
             return;
         }
         
-        if (event.getItemStack().useItemRightClick(event.getWorld(), event.getEntityPlayer(), EnumHand.OFF_HAND).getType() == EnumActionResult.SUCCESS) {
+        if (event.getItemStack().getItem().onItemUse(event.getItemStack(), event.getEntityPlayer(), event.getWorld(), BlockPos.ORIGIN, EnumHand.MAIN_HAND, EnumFacing.DOWN, 0, 0, 0) == EnumActionResult.SUCCESS) {
             if (pos1.isEmpty()){
                 pos1.add(event.getPos().getX());
                 pos1.add(event.getPos().getY());
@@ -47,6 +49,9 @@ public class BlockFillerPositionSelector {
                 event.getEntityPlayer().addChatMessage(new TextComponentString(TextFormatting.GREEN + "Position 1 set to " + event.getPos().getX() + ", " + event.getPos().getY() + ", " + event.getPos().getZ() + "."));
                 event.setCanceled(true);
             }
-        }     
+        }
+//        if (event.getItemStack().useItemRightClick(event.getWorld(), event.getEntityPlayer(), EnumHand.OFF_HAND).getType() == EnumActionResult.SUCCESS) {
+//            
+//        }     
     }
 }

@@ -2,13 +2,13 @@
 {
   "modid": "printfromminecraft",
   "name": "Print From Minecraft",
-  "description": "Place PrintBlocks around creation and send model to 3D Printer.",
+  "description": "Use wand to mark print area around creation and send model to 3D Printer.",
   "version": "${version}",
   "mcversion": "${mcversion}",
-  "url": "",
+  "url": "kateringland.com",
   "updateUrl": "",
-  "authorList": ["star"],
-  "credits": "credit to the people",
+  "authorList": ["Kate Ringland"],
+  "credits": "tbd",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []

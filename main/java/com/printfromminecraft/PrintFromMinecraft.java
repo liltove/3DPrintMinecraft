@@ -22,7 +22,6 @@ public class PrintFromMinecraft {
     public static final String MODID = "printfromminecraft";
     public static final String VERSION = "0.02";
     
-    public static Block printBlock;
     public static Item magicPrintWand;
     
     @SidedProxy(clientSide = "com.printfromminecraft.ClientProxy", serverSide = "com.printfromminecraft.ServerProxy")
@@ -30,17 +29,16 @@ public class PrintFromMinecraft {
     
     @EventHandler
     public void init(FMLPreInitializationEvent event) {
-        printBlock = new PrintBlock();
-        proxy.registerRendering();
         
-        //register the wand texture and model
-        Item magicPrintWandItem = GameRegistry.findItem("printfromminecraft", "magicPrintWand");
-        ModelResourceLocation magicPrintWandModel = new ModelResourceLocation("printfromminecraft:magicPrintWand", "inventory");
-        Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(magicPrintWandItem, 0, magicPrintWandModel);
     }
     
     @EventHandler
     public void init(FMLInitializationEvent event) {
+        //register the wand texture and model
+        //magicPrintWand = new Item().setRegistryName("printfromminecraft", "magicPrintWand");
+        magicPrintWand = new MagicPrintWand();
+        GameRegistry.register(magicPrintWand);
+        
 
         //add the recipe to create an apple
         GameRegistry.addRecipe(new ItemStack(magicPrintWand),
@@ -50,23 +48,20 @@ public class PrintFromMinecraft {
             'X', Blocks.DIRT
         );
         
-        //add the new block type
-        
     }
     
     @EventHandler
     public void init(FMLPostInitializationEvent event) {
         if (event.getSide() == Side.CLIENT) {
-            RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
-            renderItem.getItemModelMesher().register(Item.getItemFromBlock(printBlock),0,new ModelResourceLocation(MODID + ":" + ((PrintBlock)printBlock).getName(), "inventory"));
+            ModelResourceLocation magicPrintWandModel = new ModelResourceLocation(magicPrintWand.getRegistryName(), "inventory");
+            Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(magicPrintWand, 0, magicPrintWandModel);
         }
         
     }
     
     @EventHandler
     public void registerCommands(FMLServerStartingEvent event) {
-        //event.registerServerCommand(new PrintModel());
-        event.registerServerCommand(new BlockFillCommand());
+        
     }
     
     

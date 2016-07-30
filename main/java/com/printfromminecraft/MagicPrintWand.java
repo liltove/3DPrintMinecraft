@@ -19,8 +19,8 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class MagicPrintWand extends Item {
     
-    static List<Double> pos1 = new ArrayList();
-    static List<Double> pos2 = new ArrayList();
+    static List<Integer> pos1 = new ArrayList();
+    static List<Integer> pos2 = new ArrayList();
     
     public MagicPrintWand(){
         super();
@@ -33,26 +33,26 @@ public class MagicPrintWand extends Item {
     @Override
     public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
         if (!world.isRemote){
-            BlockPos b1 = new BlockPos(0,0,0);
+            BlockPos b = new BlockPos(getBlockCoords(world, player));
             if (pos1.isEmpty() && pos2.isEmpty()){
-                pos1.add(player.posX);
-                pos1.add(player.posY);
-                pos1.add(player.posZ);
+                pos1.add(b.getX());
+                pos1.add(b.getY());
+                pos1.add(b.getZ());
 
                 player.addChatMessage(new TextComponentString(TextFormatting.GREEN + "Position 1 set to " + player.posX + ", " + player.posY + ", " + player.posZ + "."));
             } else if (!pos1.isEmpty() && pos2.isEmpty()){
-                pos2.add(player.posX);
-                pos2.add(player.posY);
-                pos2.add(player.posZ);
+                pos2.add(b.getX());
+                pos2.add(b.getY());
+                pos2.add(b.getZ());
 
                 player.addChatMessage(new TextComponentString(TextFormatting.GREEN + "Position 2 set to " + player.posX + ", " + player.posY + ", " + player.posZ + "."));
             } else {
                 pos1.clear();
                 pos2.clear();
 
-                pos1.add(player.posX);
-                pos1.add(player.posY);
-                pos1.add(player.posZ);
+                pos1.add(b.getX());
+                pos1.add(b.getY());
+                pos1.add(b.getZ());
         
                 player.addChatMessage(new TextComponentString(TextFormatting.GREEN + "Position 1 set to " + player.posX + ", " + player.posY + ", " + player.posZ + "."));
             }
@@ -73,11 +73,6 @@ public class MagicPrintWand extends Item {
         BlockPos block = new BlockPos((int)x, (int)y-2, (int)z);
         
         player.addChatMessage(new TextComponentString(world.getBlockState(block).getBlock().getLocalizedName()));
-        
-        IBlockState bs = (IBlockState) world.getBlockState(block);
-        return block;
-        
-        
-        
+        return block; 
     }
 }

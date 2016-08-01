@@ -67,7 +67,7 @@ public class WriteToSTL implements ICommand{
             sendErrorMessage(sender, "Invalid number of arguments");
             return;
         }
-        CheckBlocks checker = new CheckBlocks(sender.getEntityWorld());
+        
         
         //check that y's are equal
         if(!checkLevel()){
@@ -82,8 +82,11 @@ public class WriteToSTL implements ICommand{
         //make sure p1 is smaller
         swapPos();
 
+        CheckBlocks checker = new CheckBlocks(sender.getEntityWorld());
+        
+        sendErrorMessage(sender, "Writing to file...");
         String filename = args[0];
-        String stlfile = "/stlfiles/" + filename + ".stl";
+        String stlfile = filename + ".stl";
 
         Writer writer = null;
         String end = "    endloop\n endfacet\n";

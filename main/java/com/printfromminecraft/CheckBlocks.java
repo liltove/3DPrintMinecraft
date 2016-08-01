@@ -42,13 +42,17 @@ public class CheckBlocks {
         int area = widthHeightDepth.get(0) * widthHeightDepth.get(1);
         //establish y for the layers
         y = p1.get(1);
+        System.out.println("Area of print: " + area);
         
         while (check < area) {
             for (int i = p1.get(0); i <= widthHeightDepth.get(0); i++) {
                 for (int j = p1.get(2); j <= widthHeightDepth.get(1); j++) {
                     //to call checkBlock
-                    if (!checkBlock(world,x,y,z)){
+                    if (checkBlock(world,x,y,z)){
+                        System.out.println("Block of air at: (" + x + ", " + z + ", " + y + ")");
                         check++;
+                    }else{
+                        System.out.println("Added block to printobject array");
                     }
                 }
             }
@@ -63,11 +67,11 @@ public class CheckBlocks {
         BlockPos block = new BlockPos((int)x, (int)y, (int)z);
         //check if that block is air or not
         if (world.getBlockState(block).getBlock().isAir(world.getBlockState(block), world, block)){
-            return false;
+            return true;
         } else {
             //if not air, add a new solid block position to the array
             printObject.add(new SolidBlockPositions(x, y, z));
-            return true;
+            return false;
         }
     }
     

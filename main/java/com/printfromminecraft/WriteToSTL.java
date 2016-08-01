@@ -81,12 +81,14 @@ public class WriteToSTL implements ICommand{
         }
         //make sure p1 is smaller
         swapPos();
-
-        CheckBlocks checker = new CheckBlocks(sender.getEntityWorld());
         
         sendErrorMessage(sender, "Writing to file...");
         String filename = args[0];
-        String stlfile = filename + ".stl";
+        sendErrorMessage(sender, "Filename: " + "stlfiles/" + filename + ".stl");
+        String stlfile = "stlfiles/" + filename + ".stl";
+        
+        System.out.println("Initiating checker...");
+        CheckBlocks checker = new CheckBlocks(sender.getEntityWorld());
 
         Writer writer = null;
         String end = "    endloop\n endfacet\n";
@@ -208,6 +210,7 @@ public class WriteToSTL implements ICommand{
     public void swapPos(){
         List<Integer> temp = new ArrayList();
         List<Integer> temp2 = new ArrayList();
+        System.out.println("Checking for swapped positions");
         if (MagicPrintWand.pos1.get(0) > MagicPrintWand.pos2.get(0)){
             temp.add(MagicPrintWand.pos1.get(0));
             temp.add(MagicPrintWand.pos1.get(1));
@@ -225,6 +228,7 @@ public class WriteToSTL implements ICommand{
             MagicPrintWand.pos2.add(temp2.get(2));
             temp.clear();
             temp2.clear();
+            System.out.println("Swapped x.");
         }
         
         if (MagicPrintWand.pos1.get(2) > MagicPrintWand.pos2.get(2)){
@@ -243,11 +247,13 @@ public class WriteToSTL implements ICommand{
             MagicPrintWand.pos2.add(temp2.get(1));
             MagicPrintWand.pos2.add(temp.get(2));
             temp.clear();
-            temp2.clear();      
+            temp2.clear();
+            System.out.println("Swapped z.");
         }
     }
     
     public boolean checkLevel(){
+        System.out.println("Is the print area level?");
         //check to make sure the print area is level
         if (MagicPrintWand.pos1.get(1) == MagicPrintWand.pos2.get(1)){
             return true;
@@ -257,6 +263,7 @@ public class WriteToSTL implements ICommand{
     }
     
     public boolean samePos(){
+        System.out.println("Are position 1 and 2 the same?");
         //check to make sure pos1 and pos 2 aren't in the same spot
         if ((MagicPrintWand.pos1.get(0) == MagicPrintWand.pos2.get(0)) && (MagicPrintWand.pos1.get(2) == MagicPrintWand.pos2.get(2))){
             return true;

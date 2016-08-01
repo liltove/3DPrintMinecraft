@@ -20,10 +20,6 @@ public class WriteToSTL implements ICommand{
     private List aliases = new ArrayList();
     private Block block;
     
-    //temp until check blocks is functional
-    public static List<SolidBlockPositions> printObject = new ArrayList();
-    public static List<Integer> widthHeightDepth = new ArrayList();
-    
     public WriteToSTL(){
         aliases.add("printmodel");
         aliases.add("pm");
@@ -66,31 +62,29 @@ public class WriteToSTL implements ICommand{
     
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args){
+        //error checking
         if(args.length != 1){
             sendErrorMessage(sender, "Invalid number of arguments");
             return;
         }
+        CheckBlocks checker = new CheckBlocks(sender.getEntityWorld());
         
+        //check that y's are equal
+        if(!checkLevel()){
+            sendErrorMessage(sender, "Print area must be level.");
+            return;
+        }
+        //check that positions aren't the same
+        if(samePos()){
+            sendErrorMessage(sender, "Print area must be more than one block.");
+            return;
+        }
+        //make sure p1 is smaller
+        swapPos();
+
         String filename = args[0];
         String stlfile = "/stlfiles/" + filename + ".stl";
-        
-        //call CheckBlocks to fill up the SolidBlockPositions array here
-        SolidBlockPositions b1 = new SolidBlockPositions(0.0,0.0,0.0);
-        SolidBlockPositions b2 = new SolidBlockPositions(1.0,1.0,1.0);
-        SolidBlockPositions b3 = new SolidBlockPositions(2.0,2.0,2.0);
-        SolidBlockPositions b4 = new SolidBlockPositions(3.0,3.0,3.0);
-        printObject.add(b1);
-        printObject.add(b2);
-        printObject.add(b3);
-        printObject.add(b4);
-        
-        int width = 4;
-        int height = 4;
-        int depth = 4;
-        widthHeightDepth.add(width);
-        widthHeightDepth.add(height);
-        widthHeightDepth.add(depth);
-        
+
         Writer writer = null;
         String end = "    endloop\n endfacet\n";
         
@@ -101,77 +95,77 @@ public class WriteToSTL implements ICommand{
             //front matter of the stl file
             writer.write("solid Minecraft\n");
             //while there are still blocks in the arraylist
-            for (int i = 0; i < printObject.size(); i++) {
-                if ((int)printObject.get(i).getX() == 0){
+            for (int i = 0; i < CheckBlocks.printObject.size(); i++) {
+                if ((int)CheckBlocks.printObject.get(i).getX() == 0){
                     writer.write(facetNormal(-1, 0, 0));
-                    writer.write(vertex((int) printObject.get(i).getX(), (int) printObject.get(i).getZ()+1, (int) printObject.get(i).getY()));
-                    writer.write(vertex((int) printObject.get(i).getX(), (int) printObject.get(i).getZ(), (int) printObject.get(i).getY()+1));
-                    writer.write(vertex((int) printObject.get(i).getX(), (int) printObject.get(i).getZ()+1, (int) printObject.get(i).getY()+1));
+                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX(), (int) CheckBlocks.printObject.get(i).getZ()+1, (int) CheckBlocks.printObject.get(i).getY()));
+                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX(), (int) CheckBlocks.printObject.get(i).getZ(), (int) CheckBlocks.printObject.get(i).getY()+1));
+                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX(), (int) CheckBlocks.printObject.get(i).getZ()+1, (int) CheckBlocks.printObject.get(i).getY()+1));
                     writer.write(end);
                     writer.write(facetNormal(-1, 0, 0));
-                    writer.write(vertex((int) printObject.get(i).getX(), (int) printObject.get(i).getZ()+1, (int) printObject.get(i).getY()));
-                    writer.write(vertex((int) printObject.get(i).getX(), (int) printObject.get(i).getZ(), (int) printObject.get(i).getY()));
-                    writer.write(vertex((int) printObject.get(i).getX(), (int) printObject.get(i).getZ(), (int) printObject.get(i).getY()+1));
+                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX(), (int) CheckBlocks.printObject.get(i).getZ()+1, (int) CheckBlocks.printObject.get(i).getY()));
+                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX(), (int) CheckBlocks.printObject.get(i).getZ(), (int) CheckBlocks.printObject.get(i).getY()));
+                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX(), (int) CheckBlocks.printObject.get(i).getZ(), (int) CheckBlocks.printObject.get(i).getY()+1));
                     writer.write(end);
                 }
-                if ((int)printObject.get(i).getX() == widthHeightDepth.get(0) - 1){
+                if ((int)CheckBlocks.printObject.get(i).getX() == CheckBlocks.widthHeightDepth.get(0) - 1){
                     writer.write(facetNormal(1, 0, 0));
-                    writer.write(vertex((int) printObject.get(i).getX()+1, (int) printObject.get(i).getZ()+1, (int) printObject.get(i).getY()));
-                    writer.write(vertex((int) printObject.get(i).getX()+1, (int) printObject.get(i).getZ()+1, (int) printObject.get(i).getY()+1));
-                    writer.write(vertex((int) printObject.get(i).getX()+1, (int) printObject.get(i).getZ(), (int) printObject.get(i).getY()+1));
+                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX()+1, (int) CheckBlocks.printObject.get(i).getZ()+1, (int) CheckBlocks.printObject.get(i).getY()));
+                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX()+1, (int) CheckBlocks.printObject.get(i).getZ()+1, (int) CheckBlocks.printObject.get(i).getY()+1));
+                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX()+1, (int) CheckBlocks.printObject.get(i).getZ(), (int) CheckBlocks.printObject.get(i).getY()+1));
                     writer.write(end);
                     writer.write(facetNormal(1, 0, 0));
-                    writer.write(vertex((int) printObject.get(i).getX()+1, (int) printObject.get(i).getZ()+1, (int) printObject.get(i).getY()));
-                    writer.write(vertex((int) printObject.get(i).getX()+1, (int) printObject.get(i).getZ(), (int) printObject.get(i).getY()+1));
-                    writer.write(vertex((int) printObject.get(i).getX()+1, (int) printObject.get(i).getZ(), (int) printObject.get(i).getY()));
+                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX()+1, (int) CheckBlocks.printObject.get(i).getZ()+1, (int) CheckBlocks.printObject.get(i).getY()));
+                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX()+1, (int) CheckBlocks.printObject.get(i).getZ(), (int) CheckBlocks.printObject.get(i).getY()+1));
+                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX()+1, (int) CheckBlocks.printObject.get(i).getZ(), (int) CheckBlocks.printObject.get(i).getY()));
                     writer.write(end);
                 }
-                if ((int)printObject.get(i).getZ() == 0){
+                if ((int)CheckBlocks.printObject.get(i).getZ() == 0){
                     writer.write(facetNormal(0, 0, -1));
-                    writer.write(vertex((int) printObject.get(i).getX(), (int) printObject.get(i).getZ(), (int) printObject.get(i).getY()));
-                    writer.write(vertex((int) printObject.get(i).getX()+1, (int) printObject.get(i).getZ(), (int) printObject.get(i).getY()+1));
-                    writer.write(vertex((int) printObject.get(i).getX(), (int) printObject.get(i).getZ(), (int) printObject.get(i).getY()+1));
+                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX(), (int) CheckBlocks.printObject.get(i).getZ(), (int) CheckBlocks.printObject.get(i).getY()));
+                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX()+1, (int) CheckBlocks.printObject.get(i).getZ(), (int) CheckBlocks.printObject.get(i).getY()+1));
+                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX(), (int) CheckBlocks.printObject.get(i).getZ(), (int) CheckBlocks.printObject.get(i).getY()+1));
                     writer.write(end);
                     writer.write(facetNormal(0, 0, -1));
-                    writer.write(vertex((int) printObject.get(i).getX(), (int) printObject.get(i).getZ(), (int) printObject.get(i).getY()));
-                    writer.write(vertex((int) printObject.get(i).getX()+1, (int) printObject.get(i).getZ(), (int) printObject.get(i).getY()));
-                    writer.write(vertex((int) printObject.get(i).getX()+1, (int) printObject.get(i).getZ(), (int) printObject.get(i).getY()+1));
+                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX(), (int) CheckBlocks.printObject.get(i).getZ(), (int) CheckBlocks.printObject.get(i).getY()));
+                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX()+1, (int) CheckBlocks.printObject.get(i).getZ(), (int) CheckBlocks.printObject.get(i).getY()));
+                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX()+1, (int) CheckBlocks.printObject.get(i).getZ(), (int) CheckBlocks.printObject.get(i).getY()+1));
                     writer.write(end);
                 }
-                if ((int)printObject.get(i).getZ() == widthHeightDepth.get(2) - 1){
+                if ((int)CheckBlocks.printObject.get(i).getZ() == CheckBlocks.widthHeightDepth.get(2) - 1){
                     writer.write(facetNormal(0, 0, 1));
-                    writer.write(vertex((int) printObject.get(i).getX(), (int) printObject.get(i).getZ()+1, (int) printObject.get(i).getY()));
-                    writer.write(vertex((int) printObject.get(i).getX(), (int) printObject.get(i).getZ()+1, (int) printObject.get(i).getY()+1));
-                    writer.write(vertex((int) printObject.get(i).getX()+1, (int) printObject.get(i).getZ()+1, (int) printObject.get(i).getY()+1));
+                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX(), (int) CheckBlocks.printObject.get(i).getZ()+1, (int) CheckBlocks.printObject.get(i).getY()));
+                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX(), (int) CheckBlocks.printObject.get(i).getZ()+1, (int) CheckBlocks.printObject.get(i).getY()+1));
+                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX()+1, (int) CheckBlocks.printObject.get(i).getZ()+1, (int) CheckBlocks.printObject.get(i).getY()+1));
                     writer.write(end);
                     writer.write(facetNormal(0, 0, 1));
-                    writer.write(vertex((int) printObject.get(i).getX(), (int) printObject.get(i).getZ()+1, (int) printObject.get(i).getY()));
-                    writer.write(vertex((int) printObject.get(i).getX()+1, (int) printObject.get(i).getZ()+1, (int) printObject.get(i).getY()+1));
-                    writer.write(vertex((int) printObject.get(i).getX()+1, (int) printObject.get(i).getZ()+1, (int) printObject.get(i).getY()));
+                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX(), (int) CheckBlocks.printObject.get(i).getZ()+1, (int) CheckBlocks.printObject.get(i).getY()));
+                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX()+1, (int) CheckBlocks.printObject.get(i).getZ()+1, (int) CheckBlocks.printObject.get(i).getY()+1));
+                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX()+1, (int) CheckBlocks.printObject.get(i).getZ()+1, (int) CheckBlocks.printObject.get(i).getY()));
                     writer.write(end);
                 }
-                if ((int)printObject.get(i).getY() == 0){
+                if ((int)CheckBlocks.printObject.get(i).getY() == 0){
                     writer.write(facetNormal(0, -1, 0));
-                    writer.write(vertex((int) printObject.get(i).getX()+1, (int) printObject.get(i).getZ(), (int) printObject.get(i).getY()));
-                    writer.write(vertex((int) printObject.get(i).getX(), (int) printObject.get(i).getZ()+1, (int) printObject.get(i).getY()));
-                    writer.write(vertex((int) printObject.get(i).getX()+1, (int) printObject.get(i).getZ()+1, (int) printObject.get(i).getY()));
+                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX()+1, (int) CheckBlocks.printObject.get(i).getZ(), (int) CheckBlocks.printObject.get(i).getY()));
+                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX(), (int) CheckBlocks.printObject.get(i).getZ()+1, (int) CheckBlocks.printObject.get(i).getY()));
+                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX()+1, (int) CheckBlocks.printObject.get(i).getZ()+1, (int) CheckBlocks.printObject.get(i).getY()));
                     writer.write(end);
                     writer.write(facetNormal(0, -1, 0));
-                    writer.write(vertex((int) printObject.get(i).getX()+1, (int) printObject.get(i).getZ(), (int) printObject.get(i).getY()));
-                    writer.write(vertex((int) printObject.get(i).getX(), (int) printObject.get(i).getZ(), (int) printObject.get(i).getY()));
-                    writer.write(vertex((int) printObject.get(i).getX(), (int) printObject.get(i).getZ()+1, (int) printObject.get(i).getY()));
+                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX()+1, (int) CheckBlocks.printObject.get(i).getZ(), (int) CheckBlocks.printObject.get(i).getY()));
+                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX(), (int) CheckBlocks.printObject.get(i).getZ(), (int) CheckBlocks.printObject.get(i).getY()));
+                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX(), (int) CheckBlocks.printObject.get(i).getZ()+1, (int) CheckBlocks.printObject.get(i).getY()));
                     writer.write(end);
                 }
-                if ((int)printObject.get(i).getY() == widthHeightDepth.get(1) - 1){
+                if ((int)CheckBlocks.printObject.get(i).getY() == CheckBlocks.widthHeightDepth.get(1) - 1){
                     writer.write(facetNormal(0, 1, 0));
-                    writer.write(vertex((int) printObject.get(i).getX()+1, (int) printObject.get(i).getZ(), (int) printObject.get(i).getY()+1));
-                    writer.write(vertex((int) printObject.get(i).getX()+1, (int) printObject.get(i).getZ()+1, (int) printObject.get(i).getY()+1));
-                    writer.write(vertex((int) printObject.get(i).getX(), (int) printObject.get(i).getZ()+1, (int) printObject.get(i).getY()+1));
+                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX()+1, (int) CheckBlocks.printObject.get(i).getZ(), (int) CheckBlocks.printObject.get(i).getY()+1));
+                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX()+1, (int) CheckBlocks.printObject.get(i).getZ()+1, (int) CheckBlocks.printObject.get(i).getY()+1));
+                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX(), (int) CheckBlocks.printObject.get(i).getZ()+1, (int) CheckBlocks.printObject.get(i).getY()+1));
                     writer.write(end);
                     writer.write(facetNormal(0, 1, 0));
-                    writer.write(vertex((int) printObject.get(i).getX()+1, (int) printObject.get(i).getZ(), (int) printObject.get(i).getY()+1));
-                    writer.write(vertex((int) printObject.get(i).getX(), (int) printObject.get(i).getZ()+1, (int) printObject.get(i).getY()+1));
-                    writer.write(vertex((int) printObject.get(i).getX(), (int) printObject.get(i).getZ(), (int) printObject.get(i).getY()+1));
+                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX()+1, (int) CheckBlocks.printObject.get(i).getZ(), (int) CheckBlocks.printObject.get(i).getY()+1));
+                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX(), (int) CheckBlocks.printObject.get(i).getZ()+1, (int) CheckBlocks.printObject.get(i).getY()+1));
+                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX(), (int) CheckBlocks.printObject.get(i).getZ(), (int) CheckBlocks.printObject.get(i).getY()+1));
                     writer.write(end);
                 }
             }
@@ -208,4 +202,63 @@ public class WriteToSTL implements ICommand{
         return end;
     }
     
+    public void swapPos(){
+        List<Integer> temp = new ArrayList();
+        List<Integer> temp2 = new ArrayList();
+        if (MagicPrintWand.pos1.get(0) > MagicPrintWand.pos2.get(0)){
+            temp.add(MagicPrintWand.pos1.get(0));
+            temp.add(MagicPrintWand.pos1.get(1));
+            temp.add(MagicPrintWand.pos1.get(2));
+            temp2.add(MagicPrintWand.pos2.get(0));
+            temp2.add(MagicPrintWand.pos2.get(1));
+            temp2.add(MagicPrintWand.pos2.get(2));
+            MagicPrintWand.pos1.clear();
+            MagicPrintWand.pos1.add(MagicPrintWand.pos2.get(0));
+            MagicPrintWand.pos1.add(temp.get(1));
+            MagicPrintWand.pos1.add(temp.get(2));
+            MagicPrintWand.pos2.clear();
+            MagicPrintWand.pos2.add(temp.get(0));
+            MagicPrintWand.pos2.add(temp2.get(1));
+            MagicPrintWand.pos2.add(temp2.get(2));
+            temp.clear();
+            temp2.clear();
+        }
+        
+        if (MagicPrintWand.pos1.get(2) > MagicPrintWand.pos2.get(2)){
+            temp.add(MagicPrintWand.pos1.get(0));
+            temp.add(MagicPrintWand.pos1.get(1));
+            temp.add(MagicPrintWand.pos1.get(2));
+            temp2.add(MagicPrintWand.pos2.get(0));
+            temp2.add(MagicPrintWand.pos2.get(1));
+            temp2.add(MagicPrintWand.pos2.get(2));
+            MagicPrintWand.pos1.clear();
+            MagicPrintWand.pos1.add(temp.get(0));
+            MagicPrintWand.pos1.add(temp.get(1));
+            MagicPrintWand.pos1.add(MagicPrintWand.pos2.get(2));
+            MagicPrintWand.pos2.clear();
+            MagicPrintWand.pos2.add(temp2.get(0));
+            MagicPrintWand.pos2.add(temp2.get(1));
+            MagicPrintWand.pos2.add(temp.get(2));
+            temp.clear();
+            temp2.clear();      
+        }
+    }
+    
+    public boolean checkLevel(){
+        //check to make sure the print area is level
+        if (MagicPrintWand.pos1.get(1) == MagicPrintWand.pos2.get(1)){
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public boolean samePos(){
+        //check to make sure pos1 and pos 2 aren't in the same spot
+        if ((MagicPrintWand.pos1.get(0) == MagicPrintWand.pos2.get(0)) && (MagicPrintWand.pos1.get(2) == MagicPrintWand.pos2.get(2))){
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

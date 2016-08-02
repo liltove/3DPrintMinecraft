@@ -78,4 +78,10 @@ public class MagicPrintWand extends Item {
         player.addChatMessage(new TextComponentString(world.getBlockState(block).getBlock().getLocalizedName()));
         return block; 
     }
+    
+    private void swapPositions(int index) {
+        int temp = pos1.get(index);
+        pos1.set(index,pos2.get(index));
+        pos2.set(index, temp);
+    }
 }

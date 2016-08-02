@@ -84,11 +84,11 @@ public class WriteToSTL implements ICommand{
         
         sendErrorMessage(sender, "Writing to file...");
         String filename = args[0];
-        sendErrorMessage(sender, "Filename: " + "stlfiles/" + filename + ".stl");
-        String stlfile = "stlfiles/" + filename + ".stl";
+        String stlfile = filename + ".stl";
         
         System.out.println("Initiating checker...");
         CheckBlocks checker = new CheckBlocks(sender.getEntityWorld());
+        checker.loopThruCoords(MagicPrintWand.pos1, MagicPrintWand.pos2, sender.getEntityWorld());
 
         Writer writer = null;
         String end = "    endloop\n endfacet\n";
@@ -100,77 +100,83 @@ public class WriteToSTL implements ICommand{
             //front matter of the stl file
             writer.write("solid Minecraft\n");
             //while there are still blocks in the arraylist
+            System.out.println("size of printobject array " + CheckBlocks.printObject.size());
+            System.out.println(CheckBlocks.printObject);
             for (int i = 0; i < CheckBlocks.printObject.size(); i++) {
-                if ((int)CheckBlocks.printObject.get(i).getX() == 0){
+                int curX = CheckBlocks.printObject.get(i).getX();
+                int curY = CheckBlocks.printObject.get(i).getY();
+                int curZ = CheckBlocks.printObject.get(i).getZ();
+                //System.out.println("current block coords: (" + curX + ", " + curZ + ", " + curY + ")");
+                if (curX == 0){
                     writer.write(facetNormal(-1, 0, 0));
-                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX(), (int) CheckBlocks.printObject.get(i).getZ()+1, (int) CheckBlocks.printObject.get(i).getY()));
-                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX(), (int) CheckBlocks.printObject.get(i).getZ(), (int) CheckBlocks.printObject.get(i).getY()+1));
-                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX(), (int) CheckBlocks.printObject.get(i).getZ()+1, (int) CheckBlocks.printObject.get(i).getY()+1));
+                    writer.write(vertex(curX, curZ+1, curY));
+                    writer.write(vertex(curX, curZ, curY+1));
+                    writer.write(vertex(curX, curZ+1, curY+1));
                     writer.write(end);
                     writer.write(facetNormal(-1, 0, 0));
-                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX(), (int) CheckBlocks.printObject.get(i).getZ()+1, (int) CheckBlocks.printObject.get(i).getY()));
-                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX(), (int) CheckBlocks.printObject.get(i).getZ(), (int) CheckBlocks.printObject.get(i).getY()));
-                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX(), (int) CheckBlocks.printObject.get(i).getZ(), (int) CheckBlocks.printObject.get(i).getY()+1));
+                    writer.write(vertex(curX, curZ+1, curY));
+                    writer.write(vertex(curX, curZ, curY));
+                    writer.write(vertex(curX, curZ, curY+1));
                     writer.write(end);
                 }
-                if ((int)CheckBlocks.printObject.get(i).getX() == CheckBlocks.widthHeightDepth.get(0) - 1){
+                if (curX == CheckBlocks.widthHeightDepth.get(0) - 1){
                     writer.write(facetNormal(1, 0, 0));
-                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX()+1, (int) CheckBlocks.printObject.get(i).getZ()+1, (int) CheckBlocks.printObject.get(i).getY()));
-                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX()+1, (int) CheckBlocks.printObject.get(i).getZ()+1, (int) CheckBlocks.printObject.get(i).getY()+1));
-                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX()+1, (int) CheckBlocks.printObject.get(i).getZ(), (int) CheckBlocks.printObject.get(i).getY()+1));
+                    writer.write(vertex(curX+1, curZ+1, curY));
+                    writer.write(vertex(curX+1, curZ+1, curY+1));
+                    writer.write(vertex(curX+1, curZ, curY+1));
                     writer.write(end);
                     writer.write(facetNormal(1, 0, 0));
-                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX()+1, (int) CheckBlocks.printObject.get(i).getZ()+1, (int) CheckBlocks.printObject.get(i).getY()));
-                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX()+1, (int) CheckBlocks.printObject.get(i).getZ(), (int) CheckBlocks.printObject.get(i).getY()+1));
-                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX()+1, (int) CheckBlocks.printObject.get(i).getZ(), (int) CheckBlocks.printObject.get(i).getY()));
+                    writer.write(vertex(curX+1, curZ+1, curY));
+                    writer.write(vertex(curX+1, curZ, curY+1));
+                    writer.write(vertex(curX+1, curZ, curY));
                     writer.write(end);
                 }
-                if ((int)CheckBlocks.printObject.get(i).getZ() == 0){
+                if (curZ == 0){
                     writer.write(facetNormal(0, 0, -1));
-                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX(), (int) CheckBlocks.printObject.get(i).getZ(), (int) CheckBlocks.printObject.get(i).getY()));
-                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX()+1, (int) CheckBlocks.printObject.get(i).getZ(), (int) CheckBlocks.printObject.get(i).getY()+1));
-                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX(), (int) CheckBlocks.printObject.get(i).getZ(), (int) CheckBlocks.printObject.get(i).getY()+1));
+                    writer.write(vertex(curX, curZ, curY));
+                    writer.write(vertex(curX+1, curZ, curY+1));
+                    writer.write(vertex(curX, curZ, curY+1));
                     writer.write(end);
                     writer.write(facetNormal(0, 0, -1));
-                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX(), (int) CheckBlocks.printObject.get(i).getZ(), (int) CheckBlocks.printObject.get(i).getY()));
-                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX()+1, (int) CheckBlocks.printObject.get(i).getZ(), (int) CheckBlocks.printObject.get(i).getY()));
-                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX()+1, (int) CheckBlocks.printObject.get(i).getZ(), (int) CheckBlocks.printObject.get(i).getY()+1));
+                    writer.write(vertex(curX, curZ, curY));
+                    writer.write(vertex(curX+1, curZ, curY));
+                    writer.write(vertex(curX+1, curZ, curY+1));
                     writer.write(end);
                 }
-                if ((int)CheckBlocks.printObject.get(i).getZ() == CheckBlocks.widthHeightDepth.get(2) - 1){
+                if (curZ == CheckBlocks.widthHeightDepth.get(1) - 1){
                     writer.write(facetNormal(0, 0, 1));
-                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX(), (int) CheckBlocks.printObject.get(i).getZ()+1, (int) CheckBlocks.printObject.get(i).getY()));
-                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX(), (int) CheckBlocks.printObject.get(i).getZ()+1, (int) CheckBlocks.printObject.get(i).getY()+1));
-                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX()+1, (int) CheckBlocks.printObject.get(i).getZ()+1, (int) CheckBlocks.printObject.get(i).getY()+1));
+                    writer.write(vertex(curX, curZ+1, curY));
+                    writer.write(vertex(curX, curZ+1, curY+1));
+                    writer.write(vertex(curX+1, curZ+1, curY+1));
                     writer.write(end);
                     writer.write(facetNormal(0, 0, 1));
-                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX(), (int) CheckBlocks.printObject.get(i).getZ()+1, (int) CheckBlocks.printObject.get(i).getY()));
-                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX()+1, (int) CheckBlocks.printObject.get(i).getZ()+1, (int) CheckBlocks.printObject.get(i).getY()+1));
-                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX()+1, (int) CheckBlocks.printObject.get(i).getZ()+1, (int) CheckBlocks.printObject.get(i).getY()));
+                    writer.write(vertex(curX, curZ+1, curY));
+                    writer.write(vertex(curX+1, curZ+1, curY+1));
+                    writer.write(vertex(curX+1, curZ+1, curY));
                     writer.write(end);
                 }
-                if ((int)CheckBlocks.printObject.get(i).getY() == 0){
+                if (curY == 0){
                     writer.write(facetNormal(0, -1, 0));
-                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX()+1, (int) CheckBlocks.printObject.get(i).getZ(), (int) CheckBlocks.printObject.get(i).getY()));
-                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX(), (int) CheckBlocks.printObject.get(i).getZ()+1, (int) CheckBlocks.printObject.get(i).getY()));
-                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX()+1, (int) CheckBlocks.printObject.get(i).getZ()+1, (int) CheckBlocks.printObject.get(i).getY()));
+                    writer.write(vertex(curX+1, curZ, curY));
+                    writer.write(vertex(curX, curZ+1, curY));
+                    writer.write(vertex(curX+1, curZ+1, curY));
                     writer.write(end);
                     writer.write(facetNormal(0, -1, 0));
-                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX()+1, (int) CheckBlocks.printObject.get(i).getZ(), (int) CheckBlocks.printObject.get(i).getY()));
-                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX(), (int) CheckBlocks.printObject.get(i).getZ(), (int) CheckBlocks.printObject.get(i).getY()));
-                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX(), (int) CheckBlocks.printObject.get(i).getZ()+1, (int) CheckBlocks.printObject.get(i).getY()));
+                    writer.write(vertex(curX+1, curZ, curY));
+                    writer.write(vertex(curX, curZ, curY));
+                    writer.write(vertex(curX, curZ+1, curY));
                     writer.write(end);
                 }
-                if ((int)CheckBlocks.printObject.get(i).getY() == CheckBlocks.widthHeightDepth.get(1) - 1){
+                if (curY == CheckBlocks.widthHeightDepth.get(2) - 1){
                     writer.write(facetNormal(0, 1, 0));
-                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX()+1, (int) CheckBlocks.printObject.get(i).getZ(), (int) CheckBlocks.printObject.get(i).getY()+1));
-                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX()+1, (int) CheckBlocks.printObject.get(i).getZ()+1, (int) CheckBlocks.printObject.get(i).getY()+1));
-                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX(), (int) CheckBlocks.printObject.get(i).getZ()+1, (int) CheckBlocks.printObject.get(i).getY()+1));
+                    writer.write(vertex(curX+1, curZ, curY+1));
+                    writer.write(vertex(curX+1, curZ+1, curY+1));
+                    writer.write(vertex(curX, curZ+1, curY+1));
                     writer.write(end);
                     writer.write(facetNormal(0, 1, 0));
-                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX()+1, (int) CheckBlocks.printObject.get(i).getZ(), (int) CheckBlocks.printObject.get(i).getY()+1));
-                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX(), (int) CheckBlocks.printObject.get(i).getZ()+1, (int) CheckBlocks.printObject.get(i).getY()+1));
-                    writer.write(vertex((int) CheckBlocks.printObject.get(i).getX(), (int) CheckBlocks.printObject.get(i).getZ(), (int) CheckBlocks.printObject.get(i).getY()+1));
+                    writer.write(vertex(curX+1, curZ, curY+1));
+                    writer.write(vertex(curX, curZ+1, curY+1));
+                    writer.write(vertex(curX, curZ, curY+1));
                     writer.write(end);
                 }
             }

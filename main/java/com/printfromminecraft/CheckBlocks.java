@@ -8,58 +8,89 @@ import net.minecraft.world.World;
 
 
 public class CheckBlocks {
-    //so we know the min and max of our area
-    public static double xmin = 0.0;
-    public static double xmax = 0.0;
-    public static double ymin = 0.0;
-    public static double ymax = 0.0;
-    public static double zmin = 0.0;
-    public static double zmax = 0.0;
-    
     //create an array to hold all the solid block position values
-    public static List<SolidBlockPositions> printObject = new ArrayList();
+    //public static List<SolidBlockPositions> printObject = new ArrayList();
+    public static List<SolidBlockPositions> printObject = new ArrayList<SolidBlockPositions>();
+    
     public static List<Integer> widthHeightDepth = new ArrayList();
     
     public CheckBlocks(World world){
         //call the function that will check the matrix cube
-        loopThruCoords(MagicPrintWand.pos1, MagicPrintWand.pos2, world);
+        //loopThruCoords(MagicPrintWand.pos1, MagicPrintWand.pos2, world);
+        System.out.println("initialized checker.");
     }
     
     public void loopThruCoords(List<Integer> p1, List<Integer> p2, World world){
-        //initialize the x, y, z -- these will chage as going through the matrix cube
-        double x = 0.0;
-        double y = 0.0;
-        double z = 0.0;
         //to access x => p1.get(0), y => p1.get(1), z => p1.get(2)
         //do math here to loop through
+        int width = p2.get(0) - p1.get(0) + 1;
+        widthHeightDepth.add(width);
         
-        widthHeightDepth.add(p2.get(0) - p1.get(0) + 1);
-        widthHeightDepth.add(p2.get(2) - p1.get(2) + 1);
+        int depth = p2.get(2) - p1.get(2) + 1;
+        widthHeightDepth.add(depth);
+        
+        
         
         //check for air blocks in layer
         int check = 0;
         //get area of print        
-        int area = widthHeightDepth.get(0) * widthHeightDepth.get(1);
+        int area = width * depth;
+        //starting x
+        int x = p1.get(0);
+        //starting z
+        int z = p1.get(2);
         //establish y for the layers
-        y = p1.get(1);
+        int y = p1.get(1);
+        int starty = y;
+        
+        
+        System.out.println("width = " + width);
+        System.out.println("depth = " + depth);
+        System.out.println("Starting x = " + x);
+        System.out.println("Starting z = " + z);
         System.out.println("Area of print: " + area);
         
-        while (check < area) {
-            for (int i = p1.get(0); i <= widthHeightDepth.get(0); i++) {
-                for (int j = p1.get(2); j <= widthHeightDepth.get(1); j++) {
+        while ((check < area) || (y == 256)) {
+            System.out.println("y = " + y);
+            System.out.println("Check = " + check + " And area = " + area);
+            check = 0;
+            for (int i = x; i <= width + x; i++) {
+                System.out.println("x = " + i);
+                for (int j = z; j <= depth + z; j++) {
+                    System.out.println("z = " + j);
                     //to call checkBlock
-                    if (checkBlock(world,x,y,z)){
-                        System.out.println("Block of air at: (" + x + ", " + z + ", " + y + ")");
+                    if (checkBlock(world,i,y,j)){
+                        //System.out.println("Block of air at: (" + i + ", " + j + ", " + y + ")");
+                        //System.out.println("Check = " + check);
                         check++;
+                        System.out.println("Check = " + check + " And area = " + area);
                     }else{
-                        System.out.println("Added block to printobject array");
+                        SolidBlockPositions curBlock = new SolidBlockPositions();
+                        
+                        //if not air, add a new solid block position to the array
+                        int m = i - x;
+                        int n = y - starty;
+                        int o = j - z;
+                        
+                        curBlock.setX(m);
+                        curBlock.setY(n);
+                        curBlock.setZ(o);
+                        
+                        printObject.add(curBlock);
+                        
+                        System.out.println("Added block to printobject array at coords: " + curBlock);
+                        System.out.println(printObject);
                     }
                 }
             }
+            
             y++;
-            check = 0;
+            
             
         }
+        
+        widthHeightDepth.add(y);
+        System.out.println("Height in list: " + widthHeightDepth.get(2));
     }
     
     public boolean checkBlock(World world, double x, double y, double z){
@@ -69,8 +100,6 @@ public class CheckBlocks {
         if (world.getBlockState(block).getBlock().isAir(world.getBlockState(block), world, block)){
             return true;
         } else {
-            //if not air, add a new solid block position to the array
-            printObject.add(new SolidBlockPositions(x, y, z));
             return false;
         }
     }

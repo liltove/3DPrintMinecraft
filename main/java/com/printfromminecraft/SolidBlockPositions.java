@@ -1,32 +1,41 @@
 package com.printfromminecraft;
 
-import java.util.ArrayList;
-import java.util.List;
-
-
-
 public class SolidBlockPositions {
-    static List<Double> solidBlockPos = new ArrayList();
+    private int x;
+    private int y;
+    private int z;
     
     public SolidBlockPositions(){
-        
+        this(0,0,0);
     }
     
-    public SolidBlockPositions(Double x, Double y, Double z){
-        solidBlockPos.add(x);
-        solidBlockPos.add(y);
-        solidBlockPos.add(z);
+    public SolidBlockPositions(int x, int y, int z){
+        this.x = x;
+        this.y = y;
+        this.z = z;
     }
     
-    public double getX(){
-        return solidBlockPos.get(0);
+    public int getX(){
+        return x;
     }
     
-    public double getY(){
-        return solidBlockPos.get(1);
+    public int getY(){
+        return y;
     }
     
-    public double getZ(){
-        return solidBlockPos.get(2);
+    public int getZ(){
+        return z;
+    }
+    
+    public void setX(int X) {
+        this.x = X;
+    }
+    
+    public void setY(int Y) {
+        this.y = Y;
+    }
+    
+    public void setZ(int Z) {
+        this.z = Z;
     }
 }

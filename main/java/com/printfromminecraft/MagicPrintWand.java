@@ -19,12 +19,13 @@ public class MagicPrintWand extends Item {
     
     static List<Integer> pos1 = new ArrayList();
     static List<Integer> pos2 = new ArrayList();
+    private final String name = "magicPrintWand";
     
     public MagicPrintWand(){
-        super();
-        setRegistryName("magicPrintWand");
-        setUnlocalizedName("magicPrintWand");
+        setRegistryName(name);
+        setUnlocalizedName(name);
         setCreativeTab(CreativeTabs.TOOLS);
+        PrintFromMinecraft.namesList.add(this);
         GameRegistry.register(this);
     }
     
@@ -32,7 +33,7 @@ public class MagicPrintWand extends Item {
     public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
         if (!world.isRemote){
             BlockPos b = new BlockPos(getBlockCoords(world, player));
-            if (pos1.isEmpty() && pos2.isEmpty()){
+            if (pos1.isEmpty()){
                 pos1.add(b.getX());
                 pos1.add(b.getY());
                 pos1.add(b.getZ());
@@ -62,6 +63,10 @@ public class MagicPrintWand extends Item {
 
         return new ActionResult(EnumActionResult.SUCCESS, stack);
     }
+    
+    public String getName() {
+        return name;
+        }
     
     public BlockPos getBlockCoords(World world, EntityPlayer player){
         double x = player.posX;

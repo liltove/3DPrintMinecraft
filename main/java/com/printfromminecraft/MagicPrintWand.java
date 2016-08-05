@@ -22,11 +22,13 @@ public class MagicPrintWand extends Item {
     private final String name = "magicPrintWand";
     
     public MagicPrintWand(){
-        setRegistryName(name);
-        setUnlocalizedName(name);
+        GameRegistry.registerItem(this, name);
+        setUnlocalizedName("printfromminecraft" + "_" + name);
+        //setRegistryName(name);
+        //setUnlocalizedName(name);
         setCreativeTab(CreativeTabs.TOOLS);
-        PrintFromMinecraft.namesList.add(this);
-        GameRegistry.register(this);
+        //PrintFromMinecraft.namesList.add(this);
+        //GameRegistry.register(this);
     }
     
     @Override
@@ -73,15 +75,9 @@ public class MagicPrintWand extends Item {
         double y = player.posY;
         double z = player.posZ;
         
-        BlockPos block = new BlockPos((int)x, (int)y-2, (int)z);
+        BlockPos block = new BlockPos((int)x, (int)y, (int)z);
         
         player.addChatMessage(new TextComponentString(world.getBlockState(block).getBlock().getLocalizedName()));
         return block; 
-    }
-    
-    private void swapPositions(int index) {
-        int temp = pos1.get(index);
-        pos1.set(index,pos2.get(index));
-        pos2.set(index, temp);
     }
 }

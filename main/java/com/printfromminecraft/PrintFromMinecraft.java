@@ -17,6 +17,8 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 @Mod(modid = PrintFromMinecraft.MODID, version = PrintFromMinecraft.VERSION)
 public class PrintFromMinecraft {
@@ -26,11 +28,17 @@ public class PrintFromMinecraft {
     public static List<Item> namesList = new ArrayList<Item>();
     public static Item magicPrintWand;
     
+    //TutorialEventHandler handler = new TutorialEventHandler(); 
     @SidedProxy(clientSide = "com.printfromminecraft.ClientProxy", serverSide = "com.printfromminecraft.ServerProxy")
     public static CommonProxy proxy;
     
     @EventHandler
     public void init(FMLPreInitializationEvent event) {
+        //event handler registry
+//    	FMLCommonHandler.instance().bus().register(handler);
+//    	MinecraftForge.EVENT_BUS.register(handler);
+    
+    	//GameRegistry.registerItem(tutorialItem, "tutorialItem");
         //register the wand texture and model
         magicPrintWand = new MagicPrintWand();
         GameRegistry.register(magicPrintWand);
@@ -44,7 +52,6 @@ public class PrintFromMinecraft {
             RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
             renderItem.getItemModelMesher().register(magicPrintWand, 0, new ModelResourceLocation(MODID + ":" + ((MagicPrintWand) magicPrintWand).getName(), "inventory"));
         }
-
         //add the recipe to create an apple
         GameRegistry.addRecipe(new ItemStack(magicPrintWand),
             "XXX",

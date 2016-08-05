@@ -19,6 +19,8 @@ import net.minecraft.util.text.TextFormatting;
 public class WriteToSTL implements ICommand{
     private List aliases = new ArrayList();
     private Block block;
+    public int scalar;
+    public int adjuster;
     
     public WriteToSTL(){
         aliases.add("printmodel");
@@ -82,6 +84,9 @@ public class WriteToSTL implements ICommand{
         //make sure p1 is smaller
         swapPos();
         
+        scalar = 1;
+        adjuster = 1;
+        
         sendErrorMessage(sender, "Writing to file...");
         String filename = args[0];
         String stlfile = filename + ".stl";
@@ -103,47 +108,47 @@ public class WriteToSTL implements ICommand{
             System.out.println("size of printobject array " + CheckBlocks.printObject.size());
             System.out.println(CheckBlocks.printObject);
             for (int i = 0; i < CheckBlocks.printObject.size(); i++) {
-                int curX = CheckBlocks.printObject.get(i).getX();
-                int curY = CheckBlocks.printObject.get(i).getY();
-                int curZ = CheckBlocks.printObject.get(i).getZ();
+                int curX = CheckBlocks.printObject.get(i).getX()*scalar;
+                int curY = CheckBlocks.printObject.get(i).getY()*scalar;
+                int curZ = CheckBlocks.printObject.get(i).getZ()*scalar;
                 //System.out.println("current block coords: (" + curX + ", " + curZ + ", " + curY + ")");
-                if (curX == 0){
+                //if (curX == 0){
                     writer.write(facetNormal(-1, 0, 0));
-                    writer.write(vertex(curX, curZ+1, curY));
+                    writer.write(vertex(curX, curZ+adjuster, curY));
                     writer.write(vertex(curX, curZ, curY+1));
-                    writer.write(vertex(curX, curZ+1, curY+1));
+                    writer.write(vertex(curX, curZ+adjuster, curY+adjuster));
                     writer.write(end);
                     writer.write(facetNormal(-1, 0, 0));
-                    writer.write(vertex(curX, curZ+1, curY));
+                    writer.write(vertex(curX, curZ+adjuster, curY));
                     writer.write(vertex(curX, curZ, curY));
-                    writer.write(vertex(curX, curZ, curY+1));
+                    writer.write(vertex(curX, curZ, curY+adjuster));
                     writer.write(end);
-                }
-                if (curX == CheckBlocks.widthHeightDepth.get(0) - 1){
+                //}
+                //if (curX == CheckBlocks.maxX){
                     writer.write(facetNormal(1, 0, 0));
-                    writer.write(vertex(curX+1, curZ+1, curY));
-                    writer.write(vertex(curX+1, curZ+1, curY+1));
-                    writer.write(vertex(curX+1, curZ, curY+1));
+                    writer.write(vertex(curX+adjuster, curZ+adjuster, curY));
+                    writer.write(vertex(curX+adjuster, curZ+adjuster, curY+adjuster));
+                    writer.write(vertex(curX+adjuster, curZ, curY+adjuster));
                     writer.write(end);
                     writer.write(facetNormal(1, 0, 0));
-                    writer.write(vertex(curX+1, curZ+1, curY));
-                    writer.write(vertex(curX+1, curZ, curY+1));
-                    writer.write(vertex(curX+1, curZ, curY));
+                    writer.write(vertex(curX+adjuster, curZ+adjuster, curY));
+                    writer.write(vertex(curX+adjuster, curZ, curY+adjuster));
+                    writer.write(vertex(curX+adjuster, curZ, curY));
                     writer.write(end);
-                }
-                if (curZ == 0){
+                //}
+                //if (curZ == 0){
                     writer.write(facetNormal(0, 0, -1));
                     writer.write(vertex(curX, curZ, curY));
-                    writer.write(vertex(curX+1, curZ, curY+1));
-                    writer.write(vertex(curX, curZ, curY+1));
+                    writer.write(vertex(curX+adjuster, curZ, curY+adjuster));
+                    writer.write(vertex(curX, curZ, curY+adjuster));
                     writer.write(end);
                     writer.write(facetNormal(0, 0, -1));
                     writer.write(vertex(curX, curZ, curY));
-                    writer.write(vertex(curX+1, curZ, curY));
-                    writer.write(vertex(curX+1, curZ, curY+1));
+                    writer.write(vertex(curX+adjuster, curZ, curY));
+                    writer.write(vertex(curX+adjuster, curZ, curY+adjuster));
                     writer.write(end);
-                }
-                if (curZ == CheckBlocks.widthHeightDepth.get(1) - 1){
+                //}
+                //if (curZ == CheckBlocks.maxZ){
                     writer.write(facetNormal(0, 0, 1));
                     writer.write(vertex(curX, curZ+1, curY));
                     writer.write(vertex(curX, curZ+1, curY+1));
@@ -154,8 +159,8 @@ public class WriteToSTL implements ICommand{
                     writer.write(vertex(curX+1, curZ+1, curY+1));
                     writer.write(vertex(curX+1, curZ+1, curY));
                     writer.write(end);
-                }
-                if (curY == 0){
+                //}
+                //if (curY == 0){
                     writer.write(facetNormal(0, -1, 0));
                     writer.write(vertex(curX+1, curZ, curY));
                     writer.write(vertex(curX, curZ+1, curY));
@@ -166,8 +171,8 @@ public class WriteToSTL implements ICommand{
                     writer.write(vertex(curX, curZ, curY));
                     writer.write(vertex(curX, curZ+1, curY));
                     writer.write(end);
-                }
-                if (curY == CheckBlocks.widthHeightDepth.get(2) - 1){
+                //}
+                //if (curY == CheckBlocks.maxY){
                     writer.write(facetNormal(0, 1, 0));
                     writer.write(vertex(curX+1, curZ, curY+1));
                     writer.write(vertex(curX+1, curZ+1, curY+1));
@@ -178,7 +183,7 @@ public class WriteToSTL implements ICommand{
                     writer.write(vertex(curX, curZ+1, curY+1));
                     writer.write(vertex(curX, curZ, curY+1));
                     writer.write(end);
-                }
+                //}
             }
             writer.write("endsolid Minecraft\n");
             sender.addChatMessage(new TextComponentString(TextFormatting.GREEN +"Finished writing to file: " + stlfile));

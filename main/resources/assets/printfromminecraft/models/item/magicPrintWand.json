@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0":"printfromminecraft:items/magicPrintWand"
+        "layer0": "printfromminecraft:items/magicPrintWand"
     },
     "display": {
         "thirdperson": {

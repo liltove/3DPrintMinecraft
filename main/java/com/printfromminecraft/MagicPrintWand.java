@@ -22,13 +22,14 @@ public class MagicPrintWand extends Item {
     private final String name = "magicPrintWand";
     
     public MagicPrintWand(){
-        GameRegistry.registerItem(this, name);
-        setUnlocalizedName("printfromminecraft" + "_" + name);
-        //setRegistryName(name);
-        //setUnlocalizedName(name);
+        
+        //setUnlocalizedName("printfromminecraft" + "_" + name);
+        setRegistryName(name);
+        setUnlocalizedName(name);
         setCreativeTab(CreativeTabs.TOOLS);
         //PrintFromMinecraft.namesList.add(this);
-        //GameRegistry.register(this);
+        GameRegistry.register(this);
+        GameRegistry.registerItem(this, name);
     }
     
     @Override
